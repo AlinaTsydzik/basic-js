@@ -22,8 +22,9 @@ function getSumOfDigits(n) {
     return sum;
   }
   else{
-   return getSumOfDigits(sum);
+    return getSumOfDigits(sum);
   }
+
 }
 
 

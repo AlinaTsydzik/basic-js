@@ -20,13 +20,60 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+ alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+
+  constructor(direct = true) {
+    this.direct = direct;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+
+  encrypt(str, key) {
+    if (!str || !key) throw new Error ('Incorrect arguments!')
+    str = str.toUpperCase();
+    key = key.toUpperCase();
+
+    let numAlph = [];
+    for( let i = 0; i<this.alphabet.length; i++){
+      numAlph[this.alphabet[i]] = i;
+    }
+
+    let code = '';
+    let j = 0;
+    for(let i=0; i<str.length; i++) {
+      if(numAlph[str[i]] || numAlph[str[i]] === 0 ){
+        code+=this.alphabet[(numAlph[str[i]] + numAlph[key[j % key.length]]) % this.alphabet.length];
+        j++;
+      }
+      else code+=str[i];
+    }
+    return this.direct ? code : code.split("").reverse().join("");
+  }
+
+
+
+
+  decrypt(str, key) {
+    if (!str || !key) throw new Error ('Incorrect arguments!')
+    str = str.toUpperCase();
+    key = key.toUpperCase();
+
+    let numAlph = {};
+    for( let i = 0; i<this.alphabet.length; i++){
+      numAlph[this.alphabet[i]] = i;
+    }
+
+    let code = '';
+    let j = 0;
+    for(let i=0; i<str.length; i++) {
+      if(numAlph[str[i]] || numAlph[str[i]]===0 ){
+      code+=this.alphabet[(numAlph[str[i]] - numAlph[key[j % key.length]] + this.alphabet.length)%this.alphabet.length];
+      j++;
+    }
+    else code+=str[i];
+  }
+  return this.direct ? code : code.split("").reverse().join("");
   }
 }
 
